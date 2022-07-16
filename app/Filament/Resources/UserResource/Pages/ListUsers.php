@@ -7,5 +7,10 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListUsers extends ListRecords
 {
+    protected function getTitle(): string
+    {
+        return 'Usuarios';
+    }
+
     protected static string $resource = UserResource::class;
 }

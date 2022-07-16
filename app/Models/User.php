@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+//use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
+use Filament\Models\Contracts\HasName;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasName, HasAvatar
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -18,13 +23,27 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'imagen',
         'email',
         'password',
-        'phone',
-        'address',
-        'facebook_profile',
-        'instagram_profile',
+        'estado',
+        'nombre',
+        'apellido',
+        'direccion',
+        'tipo',
+        'dni',
+        'sexo',
+        'edad', 
+        'movil',
+        'fecha_nacimiento',
+        'nro_cuenta',
+        'banco',
+        'cci',
+        'fecha_voucher',
+        'sueño',
+        'voucher',
+        'declaju',
+        'foto_dni',
     ];
 
     /**
@@ -35,6 +54,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'estado' => 'boolean',
     ];
 
     /**
@@ -45,4 +65,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getFilamentName(): string
+    {
+        return "{$this->nombre} {$this->apellido}";
+    }
+    public function getFilamentAvatarUrl(): ?string
+    {
+         return Storage::url($this->imagen);
+    }
 }
